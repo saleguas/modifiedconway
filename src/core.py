@@ -30,22 +30,24 @@ class Cell:
         self.status = 1  # 1 for alive, 0 for dead
 
     def findNeighbors(self, cells, radius):
-        cellsInRadius = []
+        aliveCellsInRadius = []
+
         for cell in cells:
             # check absolute distance
             if (
                 abs(cell.position[0] - self.position[0]) <= radius
                 and abs(cell.position[1] - self.position[1]) <= radius
             ):
-                cellsInRadius.append(cell)
-        return cellsInRadius
+                if cell.status == 1:
+                    aliveCellsInRadius.append(cell)
+        return aliveCellsInRadius
 
 
 class GameOfLife:
     # making our game of life object
     # this is the parent object that controls everything else
     # it has a game board and a list of cells
-    def __init__(self, size=(800, 800), units=2000, FPS=60):
+    def __init__(self, size=(800, 800), units=100, FPS=60):
         # initialize our game of life object
         self.gameboard = GameBoard(size)
         self.units = units
@@ -73,21 +75,23 @@ class GameOfLife:
         # apply the rules of the game of life to the cells
         # this is where the logic is
         for cell1 in self.cells:
-            neighbors = cell1.findNeighbors(self.cells, 5)
+            aliveNeighbors = cell1.findNeighbors(self.cells, 25)
             # now implement some rules
             # if cell1 is alive and has less than 2 neighbors, cell1 dies
             # if cell1 is alive and has 2 or 3 neighbors, cell1 stays alive
             # if cell1 is alive and has more than 3 neighbors, cell1 dies
             # if cell1 is dead and has 3 neighbors, cell1 comes to life
+            # cell1.position[0] += random.randint(-1, 1)
+            # cell1.position[1] += random.randint(-1, 1)
             if cell1.status == 1:
-                if len(neighbors) < 2:
+                if len(aliveNeighbors) < 2:
                     cell1.status = 0
                     population_change = True
-                elif len(neighbors) > 3:
+                elif len(aliveNeighbors) > 3:
                     cell1.status = 0
                     population_change = True
             else:
-                if len(neighbors) == 3:
+                if len(aliveNeighbors) == 3:
                     cell1.status = 1
                     population_change = True
             if not population_change:
@@ -136,7 +140,8 @@ class GameOfLife:
                     (cell.position[0], cell.position[1], cell.size[0], cell.size[1]),
                 )
             pygame.display.update()
+            dt.tick(self.FPS)
 
 
-g = GameOfLife(FPS=120)
+g = GameOfLife(FPS=15, units=500)
 g.start(manual=False)
