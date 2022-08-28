@@ -69,7 +69,7 @@ class GameOfLife:
         # apply the rules of the game of life to the cells
         # this is where the logic is
         for cell1 in self.cells:
-            neighbors = cell1.findNeighbors(self.cells, 10)
+            neighbors = cell1.findNeighbors(self.cells, 100)
             # now implement some rules
             # if cell1 is alive and has less than 2 neighbors, cell1 dies
             # if cell1 is alive and has 2 or 3 neighbors, cell1 stays alive
