@@ -1,4 +1,5 @@
 import pygame
+import random
 # put all the computational logic stuff here
 
 class GameBoard:
@@ -55,6 +56,23 @@ class GameOfLife:
         # initialize our game of life object
         self.gameboard = GameBoard(size)
         self.units = units
+        self.cells = []
+
+    def generate_cells(self):
+        # generate the cells for the game board
+        # make possible_colors red, green or blue in hex
+        possible_colors = ['#FF0000', '#00FF00', '#0000FF']
+        cell_size = (5, 5)
+        for x in range(self.units):
+            # random position on the game board
+            position = (random.randint(0, self.gameboard.size[0]), random.randint(0, self.gameboard.size[1]))
+            # random color from the possible_colors list
+            color = random.choice(possible_colors)
+            # create a cell object
+            cell = Cell(position, color, cell_size)
+            # add the cell to the list of cells
+            self.cells.append(cell)
+        
     
     def start(self):
         # start the game
