@@ -6,7 +6,7 @@ class GameBoard:
     # visual representation of the game board
     # don't do the logic here, this is mainly where the graphics are handled
 
-    def __init__(self, size=(100, 100)):
+    def __init__(self, size=(800, 800)):
         self.size = size
 
 
@@ -34,7 +34,8 @@ class GameBoard:
                     is_running = False
 
             self.window_surface.blit(self.background, (0, 0))
-
+            for cell in cells:
+                pygame.draw.rect(self.window_surface, cell.color, (cell.position[0], cell.position[1], cell.size[0], cell.size[1]))
             pygame.display.update()
         
 class Cell:
@@ -61,7 +62,7 @@ class GameOfLife:
     def generate_cells(self):
         # generate the cells for the game board
         # make possible_colors red, green or blue in hex
-        possible_colors = ['#FF0000', '#00FF00', '#0000FF']
+        possible_colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
         cell_size = (5, 5)
         for x in range(self.units):
             # random position on the game board
@@ -77,7 +78,8 @@ class GameOfLife:
     def start(self):
         # start the game
         self.gameboard.startWindow()
-        self.gameboard.render(None)
+        self.generate_cells()
+        self.gameboard.render(self.cells)
 
 g = GameOfLife()
 g.start()
