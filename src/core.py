@@ -1,6 +1,8 @@
 import pygame
 import random
+
 # put all the computational logic stuff here
+
 
 class GameBoard:
     # visual representation of the game board
@@ -9,36 +11,34 @@ class GameBoard:
     def __init__(self, size=(800, 800)):
         self.size = size
 
-
     def startWindow(self):
         pygame.init()
-        pygame.display.set_caption('Quick Start')
+        pygame.display.set_caption("Quick Start")
         window_surface = pygame.display.set_mode(self.size)
 
         self.background = pygame.Surface(self.size)
-        self.background.fill(pygame.Color('#000000'))
+        self.background.fill(pygame.Color("#000000"))
         self.window_surface = window_surface
-        
 
 
-        
 class Cell:
     # a cell on the game board
-    
+
     def __init__(self, position, size=(5, 5)):
         self.position = position
         self.size = size
-        self.status = 1 # 1 for alive, 0 for dead
+        self.status = 1  # 1 for alive, 0 for dead
 
     def findNeighbors(self, cells, radius):
         cellsInRadius = []
         for cell in cells:
             # check absolute distance
-            if abs(cell.position[0] - self.position[0]) <= radius and abs(cell.position[1] - self.position[1]) <= radius:
+            if (
+                abs(cell.position[0] - self.position[0]) <= radius
+                and abs(cell.position[1] - self.position[1]) <= radius
+            ):
                 cellsInRadius.append(cell)
         return cellsInRadius
-    
-    
 
 
 class GameOfLife:
@@ -58,7 +58,10 @@ class GameOfLife:
         cell_size = [5, 5]
         for x in range(self.units):
             # random position on the game board
-            position = [random.randint(0, self.gameboard.size[0]), random.randint(0, self.gameboard.size[1])]
+            position = [
+                random.randint(0, self.gameboard.size[0]),
+                random.randint(0, self.gameboard.size[1]),
+            ]
             # random color from the possible_colors list
             # create a cell object
             cell = Cell(position, cell_size)
@@ -66,10 +69,11 @@ class GameOfLife:
             self.cells.append(cell)
 
     def update(self):
+        population_change = False
         # apply the rules of the game of life to the cells
         # this is where the logic is
         for cell1 in self.cells:
-            neighbors = cell1.findNeighbors(self.cells, 10)
+            neighbors = cell1.findNeighbors(self.cells, 5)
             # now implement some rules
             # if cell1 is alive and has less than 2 neighbors, cell1 dies
             # if cell1 is alive and has 2 or 3 neighbors, cell1 stays alive
@@ -78,21 +82,19 @@ class GameOfLife:
             if cell1.status == 1:
                 if len(neighbors) < 2:
                     cell1.status = 0
+                    population_change = True
                 elif len(neighbors) > 3:
                     cell1.status = 0
+                    population_change = True
             else:
                 if len(neighbors) == 3:
                     cell1.status = 1
+                    population_change = True
+            if not population_change:
+                for cell in self.cells:
+                    cell.position[0] += random.randint(-1, 1)
+                    cell.position[1] += random.randint(-1, 1)
 
-
-
-
-        
-
-            
-        
-        
-    
     def start(self, manual=False):
         # start the game
         self.gameboard.startWindow()
@@ -102,14 +104,14 @@ class GameOfLife:
 
         is_running = True
         dt = pygame.time.Clock()
-        
+
         while is_running:
 
             # CHECK IF USER QUITS
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     is_running = False
-            # now update the game
+                # now update the game
                 if manual:
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_SPACE:
@@ -124,15 +126,17 @@ class GameOfLife:
                 # white for alive, black for dead
                 color = None
                 if cell.status == 1:
-                    color = pygame.Color('#ffffff')
+                    color = pygame.Color("#ffffff")
                 else:
-                    color = pygame.Color('#000000')
+                    color = pygame.Color("#000000")
 
-                pygame.draw.rect(window_surface, color, (cell.position[0], cell.position[1], cell.size[0], cell.size[1]))
+                pygame.draw.rect(
+                    window_surface,
+                    color,
+                    (cell.position[0], cell.position[1], cell.size[0], cell.size[1]),
+                )
             pygame.display.update()
-            dt.tick(self.FPS)
 
-    
 
-g = GameOfLife()
-g.start(manual=True)
+g = GameOfLife(FPS=120)
+g.start(manual=False)
