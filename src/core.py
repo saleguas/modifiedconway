@@ -41,7 +41,7 @@ class GameBoard:
 class Cell:
     # a cell on the game board
     
-    def __init__(self, position, color, size):
+    def __init__(self, position, color, size=(10, 10)):
         self.position = position
         self.color = color
         self.size = size
@@ -80,6 +80,8 @@ class GameOfLife:
         self.gameboard.startWindow()
         self.generate_cells()
         self.gameboard.render(self.cells)
+
+    
 
 g = GameOfLife()
 g.start()
