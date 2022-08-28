@@ -73,6 +73,11 @@ class GameOfLife:
             cell = Cell(position, color, cell_size)
             # add the cell to the list of cells
             self.cells.append(cell)
+
+    def update(self):
+        # apply the rules of the game of life to the cells
+        # this is where the logic is
+        pass
         
     
     def start(self):
