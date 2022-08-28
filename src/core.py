@@ -37,11 +37,12 @@ class GameOfLife:
     # making our game of life object
     # this is the parent object that controls everything else
     # it has a game board and a list of cells
-    def __init__(self, size=(800, 800), units=100):
+    def __init__(self, size=(800, 800), units=100, FPS=60):
         # initialize our game of life object
         self.gameboard = GameBoard(size)
         self.units = units
         self.cells = []
+        self.FPS = FPS
 
     def generate_cells(self):
         # generate the cells for the game board
@@ -64,7 +65,9 @@ class GameOfLife:
         for cell in self.cells:
             # increment position by one
             # randomly increase the horizontal position by 1 or -1
-            cell.position[0] += random.randint(-1, 1)
+            cell.position[0] += random.randint(-2, 2)
+            cell.position[1] += random.randint(-2, 2)
+
             
         
         
@@ -77,6 +80,7 @@ class GameOfLife:
         background = self.gameboard.background
 
         is_running = True
+        dt = pygame.time.Clock()
         
         while is_running:
 
@@ -93,6 +97,7 @@ class GameOfLife:
             for cell in self.cells:
                 pygame.draw.rect(window_surface, cell.color, (cell.position[0], cell.position[1], cell.size[0], cell.size[1]))
             pygame.display.update()
+            dt.tick(self.FPS)
 
     
 
