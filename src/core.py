@@ -21,22 +21,6 @@ class GameBoard:
         
 
 
-    def render(self, cells):
-        # render the actual board
-        # call this method every frame to draw the updated board
-
-        is_running = True
-        
-        while is_running:
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    is_running = False
-
-            self.window_surface.blit(self.background, (0, 0))
-            for cell in cells:
-                pygame.draw.rect(self.window_surface, cell.color, (cell.position[0], cell.position[1], cell.size[0], cell.size[1]))
-            pygame.display.update()
         
 class Cell:
     # a cell on the game board
@@ -77,14 +61,31 @@ class GameOfLife:
     def update(self):
         # apply the rules of the game of life to the cells
         # this is where the logic is
-        pass
+        for cell in self.cells:
+            # increment position by one
+            cell.position = (cell.position[0] + 1, cell.position[1] + 1)
+        
         
     
     def start(self):
         # start the game
         self.gameboard.startWindow()
         self.generate_cells()
-        self.gameboard.render(self.cells)
+        window_surface = self.gameboard.window_surface
+        background = self.gameboard.background
+
+        is_running = True
+        
+        while is_running:
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    is_running = False
+
+            window_surface.blit(background, (0, 0))
+            for cell in self.cells:
+                pygame.draw.rect(window_surface, cell.color, (cell.position[0], cell.position[1], cell.size[0], cell.size[1]))
+            pygame.display.update()
 
     
 
