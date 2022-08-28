@@ -62,13 +62,13 @@ class GameOfLife:
     def update(self):
         # apply the rules of the game of life to the cells
         # this is where the logic is
-        # for cell in self.cells:
-        #     # increment position by one
-        #     # randomly increase the horizontal position by 1 or -1
-        #     cell.position[0] += random.randint(-2, 2)
-        #     cell.position[1] += random.randint(-2, 2)
+        for cell in self.cells:
+            # increment position by one
+            # randomly increase the horizontal position by 1 or -1
+            cell.position[0] += random.randint(-2, 2)
+            cell.position[1] += random.randint(-2, 2)
+
         
-        pass
 
             
         
@@ -90,9 +90,10 @@ class GameOfLife:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     is_running = False
-
             # now update the game
-            self.update()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        self.update()
 
             # re-draw everything
             window_surface.blit(background, (0, 0))
