@@ -47,10 +47,10 @@ class GameOfLife:
         # generate the cells for the game board
         # make possible_colors red, green or blue in hex
         possible_colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
-        cell_size = (5, 5)
+        cell_size = [5, 5]
         for x in range(self.units):
             # random position on the game board
-            position = (random.randint(0, self.gameboard.size[0]), random.randint(0, self.gameboard.size[1]))
+            position = [random.randint(0, self.gameboard.size[0]), random.randint(0, self.gameboard.size[1])]
             # random color from the possible_colors list
             color = random.choice(possible_colors)
             # create a cell object
@@ -63,7 +63,9 @@ class GameOfLife:
         # this is where the logic is
         for cell in self.cells:
             # increment position by one
-            cell.position = (cell.position[0] + 1, cell.position[1] + 1)
+            # randomly increase the horizontal position by 1 or -1
+            cell.position[0] += random.randint(-1, 1)
+            
         
         
     
@@ -78,10 +80,15 @@ class GameOfLife:
         
         while is_running:
 
+            # CHECK IF USER QUITS
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     is_running = False
 
+            # now update the game
+            self.update()
+
+            # re-draw everything
             window_surface.blit(background, (0, 0))
             for cell in self.cells:
                 pygame.draw.rect(window_surface, cell.color, (cell.position[0], cell.position[1], cell.size[0], cell.size[1]))
