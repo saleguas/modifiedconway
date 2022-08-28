@@ -12,9 +12,9 @@ class GameBoard:
     def startWindow(self):
         pygame.init()
         pygame.display.set_caption('Quick Start')
-        window_surface = pygame.display.set_mode((800, 600))
+        window_surface = pygame.display.set_mode(self.size)
 
-        self.background = pygame.Surface((800, 600))
+        self.background = pygame.Surface(self.size)
         self.background.fill(pygame.Color('#000000'))
         self.window_surface = window_surface
         
@@ -51,7 +51,7 @@ class GameOfLife:
     # making our game of life object
     # this is the parent object that controls everything else
     # it has a game board and a list of cells
-    def __init__(self, size=(100, 100), units=100):
+    def __init__(self, size=(800, 800), units=100):
         # initialize our game of life object
         self.gameboard = GameBoard(size)
         self.units = units
