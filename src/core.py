@@ -41,7 +41,7 @@ class GameBoard:
 class Cell:
     # a cell on the game board
     
-    def __init__(self, position, color, size=(10, 10)):
+    def __init__(self, position, color, size=(5, 5)):
         self.position = position
         self.color = color
         self.size = size
